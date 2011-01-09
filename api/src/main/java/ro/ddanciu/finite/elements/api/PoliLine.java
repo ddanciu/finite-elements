@@ -178,6 +178,11 @@ public class PoliLine extends LinkedList<Point> implements Cloneable {
 
 	@Override
 	public int hashCode() {
-		return size();
+		int i = 0;
+		for (Point p : this) {
+			i += p.getX().intValue(); 
+			i += p.getY().intValue();
+		}
+		return i;
 	}
 }

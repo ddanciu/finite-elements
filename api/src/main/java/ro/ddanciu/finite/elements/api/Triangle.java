@@ -50,4 +50,26 @@ public class Triangle extends PoliLine {
 	public Point getP3() {
 		return e1.getP2();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+
+		if (! (o instanceof PoliLine)) {
+			return false;
+		}
+		
+		PoliLine poliLine = (PoliLine) o;
+		
+		if (poliLine.size() != 3) {
+			return false;
+		}
+		
+		for (Point p : poliLine) {
+			if (! this.contains(p)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 }
