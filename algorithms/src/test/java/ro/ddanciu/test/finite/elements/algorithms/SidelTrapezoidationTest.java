@@ -27,7 +27,8 @@ public class SidelTrapezoidationTest {
 				new Point(1, 1), 
 				new Point(1, 2));
 		
-		Set<PoliLine> results = SeidelTrapezoidation.run(triangle);
+		SeidelTrapezoidation seidelTrapezoidation = new SeidelTrapezoidation();
+		Set<PoliLine> results = seidelTrapezoidation.decompose(triangle);
 
 		assertEquals("Not as many as expected!", 1, results.size());
 		assertEquals("Triangle not returned", triangle, results.iterator().next());
@@ -39,7 +40,8 @@ public class SidelTrapezoidationTest {
 				new Point(1, 0), new Point(0, 1), 
 				new Point(1, 3), new Point(2, 2));
 		
-		Set<PoliLine> results = SeidelTrapezoidation.run(diamond);
+		SeidelTrapezoidation seidelTrapezoidation = new SeidelTrapezoidation();
+		Set<PoliLine> results = seidelTrapezoidation.decompose(diamond);
 		
 		Set<PoliLine> expected = new HashSet<PoliLine>();
 		expected.add(new PoliLine(new Point(1, 0), new Point(0, 1), new Point(2, 2)));
@@ -54,8 +56,9 @@ public class SidelTrapezoidationTest {
 				new Point(1, 0), new Point(0, 3), new Point(1, 6), 
 				new Point(4, 4), new Point(3, 1), new Point(2, 2));
 		
-		Set<PoliLine> results = SeidelTrapezoidation.run(hart);
-		
+		SeidelTrapezoidation seidelTrapezoidation = new SeidelTrapezoidation();
+		Set<PoliLine> results = seidelTrapezoidation.decompose(hart);
+
 		Set<PoliLine> expected = new HashSet<PoliLine>();
 		expected.add(new PoliLine(new Point(2, 2), new Point(1, 0), new Point(0, 3)));
 		expected.add(new PoliLine(new Point(4, 4), new Point(3, 1), new Point(2, 2), new Point(0, 3)));

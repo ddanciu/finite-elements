@@ -12,15 +12,7 @@ import ro.ddanciu.finite.elements.api.Triangle;
 
 public class CornerFanDecomposition {
 	
-	
-	private PoliLine poliLine;
-	
-	public void setPoliLine(PoliLine poliLine) {
-		this.poliLine = poliLine;
-	}
-
-	public Set<Triangle> decompose(int corner) {
-		
+	public Set<Triangle> decompose(PoliLine poliLine, int corner) {
 		
 		if (corner < 0 || corner >= poliLine.size()) {
 			throw new IllegalArgumentException(

@@ -23,19 +23,18 @@ public class CornerFanDecompositionTest {
 				new Point(1, 2));
 		
 		CornerFanDecomposition algorithm = new CornerFanDecomposition();
-		algorithm.setPoliLine(triangle);
 		
 		Set<Triangle> results;
 		
-		results= algorithm.decompose(0);
+		results= algorithm.decompose(triangle, 0);
 		assertEquals("Not as many as expected!", 1, results.size());
 		assertEquals("Triangle not returned back", triangle, results.iterator().next());
 		
-		results = algorithm.decompose(1);
+		results = algorithm.decompose(triangle, 1);
 		assertEquals("Not as many as expected!", 1, results.size());
 		assertEquals("Triangle not returned back", triangle, results.iterator().next());
 		
-		results = algorithm.decompose(2);
+		results = algorithm.decompose(triangle, 2);
 		assertEquals("Not as many as expected!", 1, results.size());
 		assertEquals("Triangle not returned back", triangle, results.iterator().next());
 	}
@@ -48,30 +47,29 @@ public class CornerFanDecompositionTest {
 				new Point(1, 3), new Point(2, 2));
 		
 		CornerFanDecomposition algorithm = new CornerFanDecomposition();
-		algorithm.setPoliLine(diamond);
 
 		Set<Triangle> results;
 		Set<Triangle> expected;
 		
-		results= algorithm.decompose(0);
+		results= algorithm.decompose(diamond, 0);
 		expected = new HashSet<Triangle>();
 		expected.add(new Triangle(new Point(1, 0), new Point(0, 1), new Point(1, 3)));
 		expected.add(new Triangle(new Point(2, 2), new Point(1, 0), new Point(1, 3)));
 		assertEquals("Decomposition failed!", expected, results);
 		
-		results= algorithm.decompose(1);
+		results= algorithm.decompose(diamond, 1);
 		expected = new HashSet<Triangle>();
 		expected.add(new Triangle(new Point(0, 1), new Point(1, 3), new Point(2, 2)));
 		expected.add(new Triangle(new Point(0, 1), new Point(2, 2), new Point(1, 0)));
 		assertEquals("Decomposition failed!", expected, results);
 		
-		results= algorithm.decompose(2);
+		results= algorithm.decompose(diamond, 2);
 		expected = new HashSet<Triangle>();
 		expected.add(new Triangle(new Point(1, 0), new Point(0, 1), new Point(1, 3)));
 		expected.add(new Triangle(new Point(2, 2), new Point(1, 0), new Point(1, 3)));
 		assertEquals("Decomposition failed!", expected, results);
 		
-		results= algorithm.decompose(3);
+		results= algorithm.decompose(diamond, 3);
 		expected = new HashSet<Triangle>();
 		expected.add(new Triangle(new Point(0, 1), new Point(1, 3), new Point(2, 2)));
 		expected.add(new Triangle(new Point(0, 1), new Point(2, 2), new Point(1, 0)));
@@ -86,12 +84,11 @@ public class CornerFanDecompositionTest {
 				new Point(3, 5), new Point(5, 4));
 		
 		CornerFanDecomposition algorithm = new CornerFanDecomposition();
-		algorithm.setPoliLine(diamond);
 
 		Set<Triangle> results;
 		Set<Triangle> expected;
 		
-		results= algorithm.decompose(1);
+		results= algorithm.decompose(diamond, 1);
 		
 		expected = new HashSet<Triangle>();
 		expected.add(new Triangle(new Point(1, 1), new Point(0, 3), new Point(3, 5))); 

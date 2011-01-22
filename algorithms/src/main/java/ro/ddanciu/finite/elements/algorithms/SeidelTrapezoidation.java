@@ -15,34 +15,36 @@ import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.PoliLine;
 import ro.ddanciu.finite.elements.api.Segment;
 
+/**
+ * Algorithm for decomposing a closed poliline into trapezes.
+ * 
+ * Note: not thread safe!!!		
+ * @author dan
+ */
 public class SeidelTrapezoidation extends AbstractSweepAlgorithm {
 
+	private PoliLine outer;
 
-	public static Set<PoliLine> run(PoliLine outer, PoliLine... holes) {
-		SeidelTrapezoidation instance = new SeidelTrapezoidation(outer, holes);
-		instance.run();
-		return instance.discretization;
-		
-	}
-	
-	final PoliLine outer;
 	@SuppressWarnings("unused")
-	private final PoliLine[] holes;
-
-	private final Pool pool;
-	private final PoliLine leftover;
-	final Set<PoliLine> discretization;
+	private PoliLine[] holes;
+	
+	private Pool pool;
+	private PoliLine leftover;
+	Set<PoliLine> discretization;
 
 	private Vertice prior;
 
-
-	private SeidelTrapezoidation(PoliLine outer, PoliLine... holes) {
+	public Set<PoliLine> decompose(PoliLine outer, PoliLine... holes) {
 		this.outer = outer;
 		this.holes = holes;
-		
+
 		pool = new Pool();
 		leftover = outer.clone();
 		discretization = new HashSet<PoliLine>();
+		
+		run();
+		return discretization;
+		
 	}
 	
 	@Override
@@ -172,5 +174,4 @@ public class SeidelTrapezoidation extends AbstractSweepAlgorithm {
 		}
 		
 	}
-	
 }
