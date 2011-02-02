@@ -26,6 +26,13 @@ public class Triangle extends PoliLine {
 		this.e2 = segments.next();
 		this.e3 = segments.next();
 	}
+	
+	public Triangle(Segment e1, Segment e2, Segment e3) {
+		super(e1, e2, e3);
+		this.e1 = e1;
+		this.e2 = e2;
+		this.e3 = e3;
+	}
 
 	public Segment getE1() {
 		return e1;
@@ -40,11 +47,11 @@ public class Triangle extends PoliLine {
 	}
 
 	public Point getP1() {
-		return e2.getP1();
+		return e2.getP2();
 	}
 
 	public Point getP2() {
-		return e1.getP1();
+		return e3.getP2();
 	}
 
 	public Point getP3() {

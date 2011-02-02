@@ -26,14 +26,12 @@ public class PoliLine extends LinkedList<Point> implements Cloneable {
 			throw new IllegalArgumentException("The supplied segments, do not define a poliline: " + segments); 
 		} 
 		Point last;
-		if (segments[0].getP2().equals(segments[1].getP1())
-				|| segments[0].getP2().equals(segments[1].getP2()))  {
-			add(segments[0].getP1());
-			last = segments[0].getP2();
-		} else if (segments[0].getP1().equals(segments[1].getP1())
-				|| segments[0].getP1().equals(segments[1].getP2()))  {
-			add(segments[0].getP2());
-			last = segments[0].getP1();
+		if (segments[0].getP2().equals(segments[1].getP1()) 
+				|| segments[0].getP1().equals(segments[1].getP1())) {
+			last = segments[1].getP1();
+		} else if (segments[0].getP2().equals(segments[1].getP2()) 
+				|| segments[0].getP1().equals(segments[1].getP2())) {
+			last = segments[1].getP2();
 		} else {
 			throw new IllegalArgumentException("The supplied segments, do not define a poliline: " + segments); 
 		}

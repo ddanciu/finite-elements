@@ -1,7 +1,7 @@
 package ro.ddanciu.finite.elements.algorithms;
 
-import static ro.ddanciu.finite.elements.api.Utils.max;
-import static ro.ddanciu.finite.elements.api.Utils.min;
+import static ro.ddanciu.finite.elements.api.utils.MathUtils.max;
+import static ro.ddanciu.finite.elements.api.utils.MathUtils.min;
 
 import java.math.BigDecimal;
 import java.util.Collections;

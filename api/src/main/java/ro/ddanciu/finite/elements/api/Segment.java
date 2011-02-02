@@ -4,8 +4,10 @@
 package ro.ddanciu.finite.elements.api;
 
 import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
-import static ro.ddanciu.finite.elements.api.Utils.max;
-import static ro.ddanciu.finite.elements.api.Utils.min;
+import static ro.ddanciu.finite.elements.api.utils.MathUtils.max;
+import static ro.ddanciu.finite.elements.api.utils.MathUtils.min;
+
+import ro.ddanciu.finite.elements.api.Line;
 
 /**
  * @author dan
@@ -13,11 +15,11 @@ import static ro.ddanciu.finite.elements.api.Utils.min;
  */
 public class Segment {
 	
-	private final Point p1;
+	protected final Point p1;
 	
-	private final Point p2;
+	protected final Point p2;
 	
-	private transient Line line;
+	protected transient Line line;
 
 	public Segment(Point p1, Point p2) {
 		
