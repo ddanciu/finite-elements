@@ -7,6 +7,8 @@ import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
 import static ro.ddanciu.finite.elements.api.utils.MathUtils.max;
 import static ro.ddanciu.finite.elements.api.utils.MathUtils.min;
 
+import java.math.BigDecimal;
+
 import ro.ddanciu.finite.elements.api.Line;
 
 /**
@@ -20,6 +22,8 @@ public class Segment {
 	protected final Point p2;
 	
 	protected transient Line line;
+	
+	protected transient BigDecimal length;
 
 	public Segment(Point p1, Point p2) {
 		
@@ -40,10 +44,20 @@ public class Segment {
 	}
 
 	public Line getLine() {
-		if (line == null) {
+		if (this.line == null) {
 			this.line = Line.defineByPoints(p1, p2);
 		}
 		return line;
+	}
+	
+	public BigDecimal length() {
+		if (this.length == null) {
+			BigDecimal x = p1.getX().subtract(p2.getX(), MY_CNTX).pow(2, MY_CNTX);
+			BigDecimal y = p1.getY().subtract(p2.getY(), MY_CNTX).pow(2, MY_CNTX);
+			this.length = new BigDecimal(Math.sqrt(x.add(y, MY_CNTX).doubleValue()));
+		}
+		
+		return this.length;
 	}
 	
 	public boolean intersects(Segment other) {

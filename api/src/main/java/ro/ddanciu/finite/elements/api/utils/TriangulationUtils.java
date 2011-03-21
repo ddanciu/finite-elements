@@ -95,7 +95,11 @@ public class TriangulationUtils {
 				 minimum.add(x);
 			} else {
 				Vector switched = x.invert();
-				for (Vector v : momsMapping.get(switched)) {
+				List<Vector> list = momsMapping.get(switched);
+				if (list == null) {
+					return null;
+				}
+				for (Vector v : list) {
 					stack.add(v);
 				}
 			}
