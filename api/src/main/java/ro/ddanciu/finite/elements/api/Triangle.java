@@ -25,6 +25,12 @@ public class Triangle extends PoliLine {
 		this.e1 = segments.next();
 		this.e2 = segments.next();
 		this.e3 = segments.next();
+		
+		if (getP1().equals(getP2())
+				|| getP1().equals(getP3())
+				|| getP2().equals(getP3())) {
+			System.out.println("Victory!");
+		}
 	}
 	
 	public Triangle(Segment e1, Segment e2, Segment e3) {
@@ -32,6 +38,12 @@ public class Triangle extends PoliLine {
 		this.e1 = e1;
 		this.e2 = e2;
 		this.e3 = e3;
+		
+		if (getP1().equals(getP2())
+				|| getP1().equals(getP3())
+				|| getP2().equals(getP3())) {
+			System.out.println("Victory!");
+		}
 	}
 
 	public Segment getE1() {

@@ -3,6 +3,8 @@
  */
 package ro.ddanciu.finite.elements.api;
 
+import static java.lang.String.format;
+
 /**
  * A vector is a segment for which the order
  * @author dan
@@ -14,6 +16,9 @@ public class Vector {
 	private boolean p1ToP2 = true;
 
 	public Vector(Point p1, Point p2) {
+		if (p1 == p2 || p1.equals(p2)) {
+			throw new IllegalArgumentException(format("Same point cannot make a vector %s!", p1));
+		}
 		magnitude =  new Segment(p1, p2);
 	}
 	
@@ -24,6 +29,14 @@ public class Vector {
 	
 	public Segment getMagnitude() {
 		return magnitude;
+	}
+	
+	public Segment getSegment() {
+		if (p1ToP2) {
+			return magnitude;
+		} else {
+			return new Segment(magnitude.getP2(), magnitude.getP1());
+		}
 	}
 
 	@Override

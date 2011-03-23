@@ -32,7 +32,7 @@ public class TriangulationUtils {
 				}
 			}
 			Iterator<Vector> it = roommates.iterator();
-			interior.add(new Triangle(item.getMagnitude(), it.next().getMagnitude(), it.next().getMagnitude()));
+			interior.add(new Triangle(item.getSegment(), it.next().getSegment(), it.next().getSegment()));
 		}
 		return interior;
 	}
@@ -58,7 +58,7 @@ public class TriangulationUtils {
 					}
 				}
 				Iterator<Vector> it = roommates.iterator();
-				exterior.add(new Triangle(item.getMagnitude(), it.next().getMagnitude(), it.next().getMagnitude()));
+				exterior.add(new Triangle(item.getSegment(), it.next().getSegment(), it.next().getSegment()));
 			}
 		}
 		return exterior;
