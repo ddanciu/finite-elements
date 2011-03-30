@@ -58,27 +58,6 @@ public class TriangulationUtilsTest {
 	}
 	
 	@Test
-	public void mappingTriangles2() {
-		Triangle t1 = new Triangle(new Point(2, 0), new Point(1, 5),new Point(4, 4)); 
-		Triangle t2 = new Triangle(new Point(1, 5), new Point(3, 6),new Point(4, 4)); 
-		Triangle t3 = new Triangle(new Point(2, 0),new Point(0, 2),new Point(1, 5));
-		
-		Map<Vector, List<Vector>> mapping = mapping(new HashSet<Triangle>(Arrays.asList(t1, t2, t3)));
-		
-		Map<Vector, List<Vector>> expected = new HashMap<Vector, List<Vector>>();
-		Vector v1 = new Vector(new Point(1, 0), new Point(0, 4));
-		Vector v2 = new Vector(new Point(0, 4), new Point(2, 6));
-		Vector v3 = new Vector(new Point(2, 6), new Point(1, 0));
-
-		expected.put(v1, Arrays.asList(v2, v3));
-		expected.put(v2, Arrays.asList(v3, v1));
-		expected.put(v3, Arrays.asList(v1, v2));
-		
-		Assert.assertEquals("Mapping failed!", expected, mapping);
-		
-	}
-	
-	@Test
 	public void exteriorOfTriangle() {
 	
 		Triangle t1 = new Triangle(new Point(1, 0), new Point(0, 4), new Point(2, 6));

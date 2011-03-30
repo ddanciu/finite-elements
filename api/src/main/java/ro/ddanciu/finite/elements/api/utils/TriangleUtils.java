@@ -46,6 +46,16 @@ public class TriangleUtils {
 		return (a.multiply(d, MY_CNTX).subtract(b.multiply(c, MY_CNTX))).abs().multiply(new BigDecimal(0.5), MY_CNTX);
 	}
 	
+	public static BigDecimal perimeter(Triangle t) {
+
+		BigDecimal a = t.getE1().length();
+		BigDecimal b = t.getE2().length();
+		BigDecimal c = t.getE3().length();
+		
+		BigDecimal x = a.add(b, MY_CNTX).add(c, MY_CNTX);
+		return x;
+	}
+	
 	/**
 	 * Three points are a counter-clockwise turn if ccw > 0, clockwise if
 	 * ccw < 0, and collinear if ccw = 0 because ccw is a determinant that
