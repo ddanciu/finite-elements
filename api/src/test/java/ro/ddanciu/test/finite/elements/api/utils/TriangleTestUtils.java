@@ -1,6 +1,10 @@
 package ro.ddanciu.test.finite.elements.api.utils;
 
 
+import static java.lang.String.format;
+
+import java.math.BigDecimal;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,4 +39,31 @@ public class TriangleTestUtils {
 	public void same() {
 		TriangleUtils.segmentInCommon(t1, t1);
 	}
+
+	@Test
+	public void circumcenterRightAngleTrinagles() {
+		
+		Point c0 = TriangleUtils.circumcenter(new Triangle(new Point(1, 1), new Point(-1, 1), new Point(0, 0)));
+		Assert.assertEquals("Center of 90 angle triangle failed", new Point(0, 1), c0);
+		
+	}
+	
+
+	@Test
+	public void circumcenterEchilateralTrinagles() {
+		
+		Point c0 = TriangleUtils.circumcenter(new Triangle(
+				new Point(new BigDecimal("0"),		new BigDecimal("1.73205081")), 
+				new Point(new BigDecimal("-1.5"), 	new BigDecimal("-0.86602540")),
+				new Point(new BigDecimal("1.5"), 	new BigDecimal("-0.86602540"))));
+		
+		System.out.println(format("c = %s", c0));
+		System.out.println(format("cx = %f", c0.getX().doubleValue()));
+		System.out.println(format("cy = %f", c0.getY().doubleValue()));
+		
+		Assert.assertEquals("Center of 90 angle triangle failed", new Point(0, 0), c0);
+		
+	}
+	
+	
 }

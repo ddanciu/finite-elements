@@ -12,6 +12,8 @@ import ro.ddanciu.finite.elements.api.Triangle;
 public class TriangleUtils {
 
 
+	private static final BigDecimal TWO = new BigDecimal("2");
+
 	public static Segment segmentInCommon(Triangle a, Triangle b) {
 
 		Point[] pointsInCommon = new Point[2];
@@ -66,5 +68,52 @@ public class TriangleUtils {
 		BigDecimal b = (p2.getY().subtract(p1.getY())).multiply((p3.getX().subtract(p1.getX())));
 		return a.subtract(b).intValue();
 	    
+	}
+	
+	/**
+	 * http://en.wikipedia.org/wiki/Circumscribed_circle#Coordinates_of_circumcenter
+	 * 
+	 * @param t
+	 * @return
+	 */
+	public static Point circumcenter(Triangle t) {
+
+		BigDecimal ax = t.getP1().getX();
+		BigDecimal ay = t.getP1().getY();
+		BigDecimal bx = t.getP2().getX();
+		BigDecimal by = t.getP2().getY();
+		BigDecimal cx = t.getP3().getX();
+		BigDecimal cy = t.getP3().getY();
+		
+		BigDecimal ax2 = ax.pow(2, MY_CNTX);
+		BigDecimal ay2 = ay.pow(2, MY_CNTX);
+		BigDecimal bx2 = bx.pow(2, MY_CNTX);
+		BigDecimal by2 = by.pow(2, MY_CNTX);
+		BigDecimal cx2 = cx.pow(2, MY_CNTX);
+		BigDecimal cy2 = cy.pow(2, MY_CNTX);
+		
+		BigDecimal ay2ax2 = ay2.add(ax2, MY_CNTX);
+		BigDecimal by2bx2 = by2.add(bx2, MY_CNTX);
+		BigDecimal cy2cx2 = cy2.add(cx2, MY_CNTX);
+		
+		BigDecimal d = TWO.multiply(
+			ax.multiply(by.subtract(cy, MY_CNTX), MY_CNTX)
+				.add(bx.multiply(cy.subtract(ay, MY_CNTX), MY_CNTX), MY_CNTX)
+				.add(cx.multiply(ay.subtract(by, MY_CNTX), MY_CNTX), MY_CNTX), 
+			MY_CNTX);
+		
+		
+		BigDecimal xn = ay2ax2.multiply(by.subtract(cy, MY_CNTX))
+			.add(by2bx2.multiply(cy.subtract(ay, MY_CNTX), MY_CNTX), MY_CNTX)
+			.add(cy2cx2.multiply(ay.subtract(by, MY_CNTX), MY_CNTX), MY_CNTX);
+	
+		BigDecimal yn = ay2ax2.multiply(cx.subtract(bx, MY_CNTX))
+			.add(by2bx2.multiply(ax.subtract(cx, MY_CNTX), MY_CNTX), MY_CNTX)
+			.add(cy2cx2.multiply(bx.subtract(ax, MY_CNTX), MY_CNTX), MY_CNTX);
+
+		BigDecimal x = xn.divide(d, MY_CNTX).round(MY_CNTX);
+		BigDecimal y = yn.divide(d, MY_CNTX).round(MY_CNTX);
+		
+		return new Point(x, y);
 	}
 }
