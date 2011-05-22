@@ -13,7 +13,7 @@ import ro.ddanciu.finite.elements.api.Segment;
 import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.finite.elements.api.utils.TriangleUtils;
 
-public class TriangleTestUtils {
+public class TriangleUtilsTests {
 	private Triangle t1 = new Triangle(new Point(1, 0), new Point(0, 1), new Point(1, 1));
 	private Triangle t2 = new Triangle(new Point(0, 1), new Point(1, 1), new Point(1, 2));
 	private Triangle t3 = new Triangle(new Point(1, 0), new Point(2, 0), new Point(2, 1));
