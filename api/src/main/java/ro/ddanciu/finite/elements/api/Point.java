@@ -19,15 +19,12 @@ public class Point {
 	private final BigDecimal y;
 	
 	public Point(BigDecimal x, BigDecimal y) {
-		this.x = x;
-		this.y = y;
+		this.x = x.setScale(MY_SCALE, MY_RND);
+		this.y = y.setScale(MY_SCALE, MY_RND);
 	}
 
 	public Point(double x, double y) {
-		this.x = new BigDecimal(x);
-		this.y = new BigDecimal(y);
-		this.x.setScale(MY_SCALE, MY_RND);
-		this.y.setScale(MY_SCALE, MY_RND);
+		this(new BigDecimal(x), new BigDecimal(y));
 	}
 
 	public BigDecimal getX() {

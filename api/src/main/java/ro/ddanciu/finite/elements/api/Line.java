@@ -8,47 +8,35 @@ import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
 import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 /**
  * @author dan
- * a*x + b
+ * y = a*x + b
+ * 
+ * TODO: RFC for formula ax + by + c = 0
  */
 public class Line {
 
 
-	private final BigDecimal a;
+	protected final BigDecimal a;
 	
-	private final BigDecimal b;
+	protected final BigDecimal b;
 	
 	public static Line defineByPoints(Point p1, Point p2) {
 		
 		if (p2.getX().compareTo(p1.getX()) != 0) {
-			BigDecimal a = p2.getY().subtract(p1.getY(), MY_CNTX).divide(p2.getX().subtract(p1.getX(), MY_CNTX), MY_CNTX);
-			BigDecimal b = p1.getY().subtract(a.multiply(p1.getX(), MY_CNTX).setScale(4, MY_RND)); 
+			BigDecimal a = p2.getY().subtract(p1.getY(), MY_CNTX).divide(p2.getX().subtract(p1.getX(), MY_CNTX), MathContext.DECIMAL32).round(MY_CNTX);
+			BigDecimal b = p1.getY().subtract(a.multiply(p1.getX(), MY_CNTX)).round(MY_CNTX); 
 			return new Line(a, b);
 		} else {
 			return new OyLine(p1.getX());
 		}
 	}
 	
-	public Line(BigDecimal a, BigDecimal b) {
-		this.a = a;
-		this.b = b;
-	}
-
-	public Line(double a, double b) {
-		this.a = new BigDecimal(a);
-		this.b = new BigDecimal(b);
-	}
-
-	public double getA() {
-		a.setScale(MY_SCALE, MY_RND);
-		return a.longValue();
-	}
-
-	public double getB() {
-		b.setScale(MY_SCALE, MY_RND);
-		return b.longValue();
+	private Line(BigDecimal a, BigDecimal b) {
+		this.a = a.setScale(MY_SCALE, MY_RND);
+		this.b = b.setScale(MY_SCALE, MY_RND);
 	}
 
 	@Override
@@ -94,9 +82,22 @@ public class Line {
 		// x = (b2 - b1)/(a1 - a2)
 		BigDecimal x = line.b.subtract(this.b, MY_CNTX).divide(a.subtract(line.a, MY_CNTX), MY_CNTX);
 		BigDecimal y = x.multiply(a, MY_CNTX).add(this.b);
-		x.setScale(MY_SCALE, MY_RND);
-		y.setScale(MY_SCALE, MY_RND);
+		x = x.setScale(MY_SCALE, MY_RND);
+		y = y.setScale(MY_SCALE, MY_RND);
 		return new Point(x, y);
+	}
+
+	public BigDecimal distance(Point p) {
+		BigDecimal n = this.a.multiply(p.getX(), MY_CNTX)
+			.subtract(p.getY(), MY_CNTX)
+			.add(b, MY_CNTX).abs(MY_CNTX);
+		
+		double d2 = this.a.pow(2, MY_CNTX).add(BigDecimal.ONE, MY_CNTX).doubleValue();
+		BigDecimal d = new BigDecimal(Math.sqrt(d2));
+		
+		BigDecimal dist = n.divide(d, MathContext.DECIMAL32);
+		dist = dist.setScale(MY_SCALE, MY_RND);
+		return dist;
 	}
 
 	private static final class OyLine extends Line {
@@ -106,18 +107,8 @@ public class Line {
 		}
 
 		@Override
-		public double getA() {
-			throw new UnsupportedOperationException("Special Line, Oy parale!");
-		}
-
-		@Override
-		public double getB() {
-			throw new UnsupportedOperationException("Special Line, Oy parale!");
-		}
-
-		@Override
 		public String toString() {
-			return "x = " + this.getA();
+			return "x = " + this.a;
 		}
 		
 
@@ -144,6 +135,13 @@ public class Line {
 			BigDecimal y =  super.a.multiply(line.a, MY_CNTX).add(line.b, MY_CNTX);
 			return new Point(super.a, y);
 		}
+
+		@Override
+		public BigDecimal distance(Point p) {
+			return p.getX().abs(MY_CNTX);
+		}
+		
+		
 		
 	}
 	

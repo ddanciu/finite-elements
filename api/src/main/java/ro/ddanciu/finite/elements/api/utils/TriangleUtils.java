@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.Segment;
@@ -111,8 +112,8 @@ public class TriangleUtils {
 			.add(by2bx2.multiply(ax.subtract(cx, MY_CNTX), MY_CNTX), MY_CNTX)
 			.add(cy2cx2.multiply(bx.subtract(ax, MY_CNTX), MY_CNTX), MY_CNTX);
 
-		BigDecimal x = xn.divide(d, MY_CNTX).round(MY_CNTX);
-		BigDecimal y = yn.divide(d, MY_CNTX).round(MY_CNTX);
+		BigDecimal x = xn.divide(d, MathContext.DECIMAL32).round(MY_CNTX);
+		BigDecimal y = yn.divide(d, MathContext.DECIMAL32).round(MY_CNTX);
 		
 		return new Point(x, y);
 	}
