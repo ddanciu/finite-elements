@@ -5,6 +5,7 @@ import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.gatherExte
 import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.gatherInterior;
 import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.mapping;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +24,8 @@ import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.Segment;
 import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.finite.elements.api.Vector;
+import ro.ddanciu.finite.elements.api.utils.TriangleUtils;
+import ro.ddanciu.finite.elements.api.utils.TriangulationUtils;
 
 public class TriangulationUtilsTest {
 	
@@ -215,6 +218,68 @@ public class TriangulationUtilsTest {
 		
 		assertEquals("Interior doesn't work!", expected, actual);
 		
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void splitOtherTriangle() {
+
+		Triangle t = new Triangle(
+				new Point(new BigDecimal("0"),		new BigDecimal("1.73205081")), 
+				new Point(new BigDecimal("-1.5"), 	new BigDecimal("-0.86602540")),
+				new Point(new BigDecimal("1.5"), 	new BigDecimal("-0.86602540")));
+		
+		Set<Triangle> container = new HashSet<Triangle>();
+		container.add(new Triangle(new Point(4, 1), new Point(3, 3), new Point(2, 6)));
+		container.add(new Triangle(new Point(4, 1), new Point(2, 6), new Point(6, 2)));
+		container.add(new Triangle(new Point(6, 2), new Point(2, 6), new Point(5, 5)));
+		
+		TriangulationUtils.divideByCentrum(t, container);
+		
+		//Point c0 = TriangleUtils.circumcenter(t);
+	}
+	
+	@Test
+	public void split() {
+
+		Triangle other = new Triangle(new Point(4, 1), new Point(3, 3), new Point(2, 6));
+
+		Triangle victim = new Triangle(
+				new Point(new BigDecimal("0"),		new BigDecimal("1.73205081")), 
+				new Point(new BigDecimal("-1.5"), 	new BigDecimal("-0.86602540")),
+				new Point(new BigDecimal("1.5"), 	new BigDecimal("-0.86602540")));
+		
+		Set<Triangle> container = new HashSet<Triangle>();
+		container.add(victim);
+		container.add(other);
+		
+		Point c0 = TriangleUtils.circumcenter(victim);
+		
+
+		Triangle child1 = new Triangle(
+				new Point(new BigDecimal("0"),		new BigDecimal("1.73205081")), 
+				new Point(new BigDecimal("-1.5"), 	new BigDecimal("-0.86602540")),
+				c0);
+		
+		Triangle child2 = new Triangle(
+				c0, 
+				new Point(new BigDecimal("-1.5"), 	new BigDecimal("-0.86602540")),
+				new Point(new BigDecimal("1.5"), 	new BigDecimal("-0.86602540")));
+		
+		Triangle child3 = new Triangle(
+				new Point(new BigDecimal("0"),		new BigDecimal("1.73205081")), 
+				c0,
+				new Point(new BigDecimal("1.5"), 	new BigDecimal("-0.86602540")));
+		
+		Set<Triangle> expected = new HashSet<Triangle>();
+		expected.add(other);
+		expected.add(child1);
+		expected.add(child2);
+		expected.add(child3);
+
+		TriangulationUtils.divideByCentrum(victim, container);
+		
+		
+		assertEquals("Interior doesn't work!", expected, container);
 	}
 	
 	

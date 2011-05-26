@@ -3,10 +3,12 @@
  */
 package ro.ddanciu.finite.elements.api;
 
+import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
 import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
 import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 /**
  * @author dan
@@ -35,7 +37,22 @@ public class Point {
 		return y;
 	}
 
-	
+	/**
+	 * Compute the distance between <code>this</code> {@link Point} and the <code>other</code> {@link Point}.
+	 * @param other the point to compute the distance to, cannot be null;
+	 * @return the distance between <code>this</code> {@link Point} and the <code>other</code> {@link Point};
+	 * already normalized using {@link BigDecimal#round};
+	 * 
+	 * 
+	 * @TODO add tests
+	 */
+	public BigDecimal distance(Point other) {
+		BigDecimal dx2 = x.subtract(other.x, MathContext.DECIMAL32).pow(2, MathContext.DECIMAL32);
+		BigDecimal dy2 = y.subtract(other.y, MathContext.DECIMAL32).pow(2, MathContext.DECIMAL32);
+		BigDecimal length = new BigDecimal(Math.sqrt(dx2.add(dy2, MathContext.DECIMAL32).doubleValue()));
+		return length.round(MY_CNTX);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

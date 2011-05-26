@@ -1,5 +1,7 @@
 package ro.ddanciu.finite.elements.api.utils;
 
+import static java.lang.String.format;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import ro.ddanciu.finite.elements.api.Point;
+import ro.ddanciu.finite.elements.api.Segment;
 import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.finite.elements.api.Vector;
 
@@ -105,6 +109,24 @@ public class TriangulationUtils {
 			}
 		}
 		return minimum;
+	}
+	
+	public static void divideByCentrum(Triangle which, Set<Triangle> container) {
+		Point circumcenter = TriangleUtils.circumcenter(which);
+		divideByPoint(which, circumcenter, container);
+	}
+
+	public static void divideByPoint(Triangle which,
+			Point circumcenter, Set<Triangle> container) {
+		
+		if (! container.remove(which)) {
+			throw new IllegalArgumentException(format("%s doesn't contain %s", container, which));
+		}
+		
+		for (Segment s : which.segments()) {
+			container.add(new Triangle(s.getP1(), s.getP2(), circumcenter));
+		}
+		
 	}
 
 }

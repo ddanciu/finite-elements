@@ -52,9 +52,7 @@ public class Segment {
 	
 	public BigDecimal length() {
 		if (this.length == null) {
-			BigDecimal x = p1.getX().subtract(p2.getX(), MY_CNTX).pow(2, MY_CNTX);
-			BigDecimal y = p1.getY().subtract(p2.getY(), MY_CNTX).pow(2, MY_CNTX);
-			this.length = new BigDecimal(Math.sqrt(x.add(y, MY_CNTX).doubleValue()));
+			this.length = p1.distance(p2);
 		}
 		
 		return this.length;
