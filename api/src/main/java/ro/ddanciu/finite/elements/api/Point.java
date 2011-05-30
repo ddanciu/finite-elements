@@ -47,10 +47,10 @@ public class Point {
 	 * @TODO add tests
 	 */
 	public BigDecimal distance(Point other) {
-		BigDecimal dx2 = x.subtract(other.x, MathContext.DECIMAL32).pow(2, MathContext.DECIMAL32);
-		BigDecimal dy2 = y.subtract(other.y, MathContext.DECIMAL32).pow(2, MathContext.DECIMAL32);
-		BigDecimal length = new BigDecimal(Math.sqrt(dx2.add(dy2, MathContext.DECIMAL32).doubleValue()));
-		return length.round(MY_CNTX);
+		BigDecimal dx2 = x.subtract(other.x, MathContext.DECIMAL128).pow(2, MathContext.DECIMAL128);
+		BigDecimal dy2 = y.subtract(other.y, MathContext.DECIMAL128).pow(2, MathContext.DECIMAL128);
+		BigDecimal length = new BigDecimal(Math.sqrt(dx2.add(dy2, MathContext.DECIMAL128).doubleValue()));
+		return length.setScale(MY_SCALE, MY_RND);
 	}
 
 	@Override
