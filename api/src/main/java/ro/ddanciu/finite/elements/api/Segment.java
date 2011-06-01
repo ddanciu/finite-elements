@@ -3,13 +3,11 @@
  */
 package ro.ddanciu.finite.elements.api;
 
-import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
+import static java.math.MathContext.DECIMAL128;
 import static ro.ddanciu.finite.elements.api.utils.MathUtils.max;
 import static ro.ddanciu.finite.elements.api.utils.MathUtils.min;
 
 import java.math.BigDecimal;
-
-import ro.ddanciu.finite.elements.api.Line;
 
 /**
  * @author dan
@@ -66,17 +64,17 @@ public class Segment {
 		| Cx-Ax  Dx-Ax |    | Cx-Bx  Dx-Bx |
 		| Cy-Ay  Dy-Ay |    | Cy-By  Dy-By |
 		 */
-		int d1 = p1.getX().subtract(other.p1.getX(), MY_CNTX).multiply(p2.getY().subtract(other.p1.getY(), MY_CNTX))
-		.subtract(p1.getY().subtract(other.p1.getY(), MY_CNTX).multiply(p2.getX().subtract(other.p1.getX(), MY_CNTX))).signum();
+		int d1 = p1.getX().subtract(other.p1.getX(), DECIMAL128).multiply(p2.getY().subtract(other.p1.getY(), DECIMAL128))
+		.subtract(p1.getY().subtract(other.p1.getY(), DECIMAL128).multiply(p2.getX().subtract(other.p1.getX(), DECIMAL128))).signum();
 
-		int d2 = p1.getX().subtract(other.p2.getX(), MY_CNTX).multiply(p2.getY().subtract(other.p2.getY(), MY_CNTX))
-		.subtract(p1.getY().subtract(other.p2.getY(), MY_CNTX).multiply(p2.getX().subtract(other.p2.getX(), MY_CNTX))).signum();
+		int d2 = p1.getX().subtract(other.p2.getX(), DECIMAL128).multiply(p2.getY().subtract(other.p2.getY(), DECIMAL128))
+		.subtract(p1.getY().subtract(other.p2.getY(), DECIMAL128).multiply(p2.getX().subtract(other.p2.getX(), DECIMAL128))).signum();
 
-		int d3 = other.p1.getX().subtract(p1.getX(), MY_CNTX).multiply(other.p2.getY().subtract(p1.getY(), MY_CNTX))
-		.subtract(other.p1.getY().subtract(p1.getY(), MY_CNTX).multiply(other.p2.getX().subtract(p1.getX(), MY_CNTX))).signum();
+		int d3 = other.p1.getX().subtract(p1.getX(), DECIMAL128).multiply(other.p2.getY().subtract(p1.getY(), DECIMAL128))
+		.subtract(other.p1.getY().subtract(p1.getY(), DECIMAL128).multiply(other.p2.getX().subtract(p1.getX(), DECIMAL128))).signum();
 
-		int d4 = other.p1.getX().subtract(p2.getX(), MY_CNTX).multiply(other.p2.getY().subtract(p2.getY(), MY_CNTX))
-		.subtract(other.p1.getY().subtract(p2.getY(), MY_CNTX).multiply(other.p2.getX().subtract(p2.getX(), MY_CNTX))).signum();
+		int d4 = other.p1.getX().subtract(p2.getX(), DECIMAL128).multiply(other.p2.getY().subtract(p2.getY(), DECIMAL128))
+		.subtract(other.p1.getY().subtract(p2.getY(), DECIMAL128).multiply(other.p2.getX().subtract(p2.getX(), DECIMAL128))).signum();
 
 		
 		if (d1 == 0 && d2 == 0 && d3 == 0 && d4 == 0) {

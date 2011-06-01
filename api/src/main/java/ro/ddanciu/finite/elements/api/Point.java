@@ -3,7 +3,6 @@
  */
 package ro.ddanciu.finite.elements.api;
 
-import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
 import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
 import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 

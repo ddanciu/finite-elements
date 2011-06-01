@@ -3,7 +3,7 @@
  */
 package ro.ddanciu.finite.elements.api;
 
-import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
+import static java.math.MathContext.DECIMAL128;
 import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
 import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
@@ -26,9 +26,9 @@ public class Line {
 	public static Line defineByPoints(Point p1, Point p2) {
 		
 		if (p2.getX().compareTo(p1.getX()) != 0) {
-			BigDecimal a = p2.getY().subtract(p1.getY(), MY_CNTX).divide(p2.getX().subtract(p1.getX(), MY_CNTX), MathContext.DECIMAL128).round(MY_CNTX);
-			BigDecimal b = p1.getY().subtract(a.multiply(p1.getX(), MY_CNTX)).round(MY_CNTX); 
-			return new Line(a, b);
+			BigDecimal a = p2.getY().subtract(p1.getY(), DECIMAL128).divide(p2.getX().subtract(p1.getX(), DECIMAL128), MathContext.DECIMAL128);
+			BigDecimal b = p1.getY().subtract(a.multiply(p1.getX(), DECIMAL128));
+			return new Line(a.setScale(MY_SCALE, MY_RND), b.setScale(MY_SCALE, MY_RND));
 		} else {
 			return new OyLine(p1.getX());
 		}
@@ -80,19 +80,20 @@ public class Line {
 		
 		// a1*x + b1 = a2*x + b2
 		// x = (b2 - b1)/(a1 - a2)
-		BigDecimal x = line.b.subtract(this.b, MY_CNTX).divide(a.subtract(line.a, MY_CNTX), MY_CNTX);
-		BigDecimal y = x.multiply(a, MY_CNTX).add(this.b);
+		BigDecimal x = line.b.subtract(this.b, DECIMAL128).divide(a.subtract(line.a, DECIMAL128), DECIMAL128);
+		BigDecimal y = x.multiply(a, DECIMAL128).add(this.b);
+		
 		x = x.setScale(MY_SCALE, MY_RND);
 		y = y.setScale(MY_SCALE, MY_RND);
 		return new Point(x, y);
 	}
 
 	public BigDecimal distance(Point p) {
-		BigDecimal n = this.a.multiply(p.getX(), MY_CNTX)
-			.subtract(p.getY(), MY_CNTX)
-			.add(b, MY_CNTX).abs(MY_CNTX);
+		BigDecimal n = this.a.multiply(p.getX(), DECIMAL128)
+			.subtract(p.getY(), DECIMAL128)
+			.add(b, DECIMAL128).abs(DECIMAL128);
 		
-		double d2 = this.a.pow(2, MY_CNTX).add(BigDecimal.ONE, MY_CNTX).doubleValue();
+		double d2 = this.a.pow(2, DECIMAL128).add(BigDecimal.ONE, DECIMAL128).doubleValue();
 		BigDecimal d = new BigDecimal(Math.sqrt(d2));
 		
 		BigDecimal dist = n.divide(d, MathContext.DECIMAL128);
@@ -132,13 +133,13 @@ public class Line {
 			}
 			// y = a2 * x + b
 			// y = a2 * a1 + b
-			BigDecimal y =  super.a.multiply(line.a, MY_CNTX).add(line.b, MY_CNTX);
+			BigDecimal y =  super.a.multiply(line.a, DECIMAL128).add(line.b, DECIMAL128);
 			return new Point(super.a, y);
 		}
 
 		@Override
 		public BigDecimal distance(Point p) {
-			return p.getX().abs(MY_CNTX);
+			return p.getX().abs(DECIMAL128).setScale(MY_SCALE, MY_RND);
 		}
 		
 		

@@ -46,18 +46,23 @@ public class ElementsReader implements Closeable {
 	private Scanner scanner;
 	
 	public ElementsReader(InputStream stream) {
-		scanner = new Scanner(stream).useDelimiter("\\s+|\\,\\s*");
+		scanner = new Scanner(stream).useDelimiter("\\s+|\\,\\s*|^\\s*$");
 	}
 	
 	public PoliLine readPoliLine() {
+		List<Point> points = readPoints();
+		return new PoliLine(points.toArray(new Point[points.size()]));
+	}
+
+	public List<Point> readPoints() {
 		List<Point> points = new ArrayList<Point>();
 		while (scanner.hasNextLine()) {
 			Point p = readPoint();
 			points.add(p);
 		}
-		return new PoliLine(points.toArray(new Point[points.size()]));
+		return points;
 	}
-
+	
 	public Point readPoint() {
 		BigDecimal x;
 		if (scanner.hasNextBigDecimal()) {

@@ -2,7 +2,8 @@ package ro.ddanciu.finite.elements.api.utils;
 
 import static java.lang.String.format;
 import static java.math.MathContext.DECIMAL128;
-import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
+import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
+import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
 import java.math.BigDecimal;
 
@@ -39,12 +40,13 @@ public class TriangleUtils {
 	}
 	
 	public static BigDecimal area(Triangle t) {
-		BigDecimal a = t.getP1().getX().subtract(t.getP3().getX(), MY_CNTX);
-		BigDecimal b = t.getP1().getY().subtract(t.getP3().getY(), MY_CNTX);
-		BigDecimal c = t.getP2().getX().subtract(t.getP3().getX(), MY_CNTX);
-		BigDecimal d = t.getP2().getY().subtract(t.getP3().getY(), MY_CNTX);
+		BigDecimal a = t.getP1().getX().subtract(t.getP3().getX(), DECIMAL128);
+		BigDecimal b = t.getP1().getY().subtract(t.getP3().getY(), DECIMAL128);
+		BigDecimal c = t.getP2().getX().subtract(t.getP3().getX(), DECIMAL128);
+		BigDecimal d = t.getP2().getY().subtract(t.getP3().getY(), DECIMAL128);
 		
-		return (a.multiply(d, MY_CNTX).subtract(b.multiply(c, MY_CNTX))).abs().multiply(new BigDecimal(0.5), MY_CNTX);
+		BigDecimal area = (a.multiply(d, DECIMAL128).subtract(b.multiply(c, DECIMAL128))).abs().multiply(new BigDecimal(0.5), DECIMAL128);
+		return area.setScale(MY_SCALE, MY_RND);
 	}
 	
 	public static BigDecimal perimeter(Triangle t) {
