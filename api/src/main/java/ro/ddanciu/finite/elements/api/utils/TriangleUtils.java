@@ -1,10 +1,10 @@
 package ro.ddanciu.finite.elements.api.utils;
 
 import static java.lang.String.format;
+import static java.math.MathContext.DECIMAL128;
 import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.Segment;
@@ -12,8 +12,6 @@ import ro.ddanciu.finite.elements.api.Triangle;
 
 public class TriangleUtils {
 
-
-	private static final BigDecimal TWO = new BigDecimal("2");
 
 	public static Segment segmentInCommon(Triangle a, Triangle b) {
 
@@ -55,7 +53,7 @@ public class TriangleUtils {
 		BigDecimal b = t.getE2().length();
 		BigDecimal c = t.getE3().length();
 		
-		BigDecimal x = a.add(b, MY_CNTX).add(c, MY_CNTX);
+		BigDecimal x = a.add(b, DECIMAL128).add(c, DECIMAL128);
 		return x;
 	}
 	
@@ -65,56 +63,33 @@ public class TriangleUtils {
 	 * gives the signed area of the triangle formed by p1, p2, and p3.	
 	 */
 	public static int counterClockwise(Point p1, Point p2, Point p3) {
-	    BigDecimal a = (p2.getX().subtract(p1.getX())).multiply((p3.getY().subtract(p1.getY())));
-		BigDecimal b = (p2.getY().subtract(p1.getY())).multiply((p3.getX().subtract(p1.getX())));
-		return a.subtract(b).intValue();
+	    BigDecimal a = (p2.getX().subtract(p1.getX(), DECIMAL128)).multiply((p3.getY().subtract(p1.getY(), DECIMAL128)), DECIMAL128);
+		BigDecimal b = (p2.getY().subtract(p1.getY(), DECIMAL128)).multiply((p3.getX().subtract(p1.getX(), DECIMAL128)), DECIMAL128);
+		return a.subtract(b, DECIMAL128).signum();
 	    
 	}
-	
+
+
 	/**
-	 * http://en.wikipedia.org/wiki/Circumscribed_circle#Coordinates_of_circumcenter
-	 * 
+	 * http://en.wikipedia.org/wiki/Incenter#Coordinates_of_the_incenter
 	 * @param t
 	 * @return
 	 */
-	public static Point circumcenter(Triangle t) {
+	public static Point incenter(Triangle triangle) {
+		
+		BigDecimal perimeter = perimeter(triangle);
+		
+		BigDecimal x1 = triangle.getE1().length().multiply(triangle.getP1().getX(), DECIMAL128);
+		BigDecimal x2 = triangle.getE2().length().multiply(triangle.getP2().getX(), DECIMAL128);
+		BigDecimal x3 = triangle.getE3().length().multiply(triangle.getP3().getX(), DECIMAL128);
+		
+		BigDecimal y1 = triangle.getE1().length().multiply(triangle.getP1().getY(), DECIMAL128);
+		BigDecimal y2 = triangle.getE2().length().multiply(triangle.getP2().getY(), DECIMAL128);
+		BigDecimal y3 = triangle.getE3().length().multiply(triangle.getP3().getY(), DECIMAL128);
+		
+		BigDecimal x = x1.add(x2, DECIMAL128).add(x3, DECIMAL128).divide(perimeter, DECIMAL128);
+		BigDecimal y = y1.add(y2, DECIMAL128).add(y3, DECIMAL128).divide(perimeter, DECIMAL128);
 
-		BigDecimal ax = t.getP1().getX();
-		BigDecimal ay = t.getP1().getY();
-		BigDecimal bx = t.getP2().getX();
-		BigDecimal by = t.getP2().getY();
-		BigDecimal cx = t.getP3().getX();
-		BigDecimal cy = t.getP3().getY();
-		
-		BigDecimal ax2 = ax.pow(2, MY_CNTX);
-		BigDecimal ay2 = ay.pow(2, MY_CNTX);
-		BigDecimal bx2 = bx.pow(2, MY_CNTX);
-		BigDecimal by2 = by.pow(2, MY_CNTX);
-		BigDecimal cx2 = cx.pow(2, MY_CNTX);
-		BigDecimal cy2 = cy.pow(2, MY_CNTX);
-		
-		BigDecimal ay2ax2 = ay2.add(ax2, MY_CNTX);
-		BigDecimal by2bx2 = by2.add(bx2, MY_CNTX);
-		BigDecimal cy2cx2 = cy2.add(cx2, MY_CNTX);
-		
-		BigDecimal d = TWO.multiply(
-			ax.multiply(by.subtract(cy, MY_CNTX), MY_CNTX)
-				.add(bx.multiply(cy.subtract(ay, MY_CNTX), MY_CNTX), MY_CNTX)
-				.add(cx.multiply(ay.subtract(by, MY_CNTX), MY_CNTX), MY_CNTX), 
-			MY_CNTX);
-		
-		
-		BigDecimal xn = ay2ax2.multiply(by.subtract(cy, MY_CNTX))
-			.add(by2bx2.multiply(cy.subtract(ay, MY_CNTX), MY_CNTX), MY_CNTX)
-			.add(cy2cx2.multiply(ay.subtract(by, MY_CNTX), MY_CNTX), MY_CNTX);
-	
-		BigDecimal yn = ay2ax2.multiply(cx.subtract(bx, MY_CNTX))
-			.add(by2bx2.multiply(ax.subtract(cx, MY_CNTX), MY_CNTX), MY_CNTX)
-			.add(cy2cx2.multiply(bx.subtract(ax, MY_CNTX), MY_CNTX), MY_CNTX);
-
-		BigDecimal x = xn.divide(d, MathContext.DECIMAL32).round(MY_CNTX);
-		BigDecimal y = yn.divide(d, MathContext.DECIMAL32).round(MY_CNTX);
-		
-		return new Point(x, y);
+		return new Point(x, y); 
 	}
 }

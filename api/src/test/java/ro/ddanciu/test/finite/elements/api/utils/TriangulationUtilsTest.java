@@ -233,9 +233,9 @@ public class TriangulationUtilsTest {
 		container.add(new Triangle(new Point(4, 1), new Point(2, 6), new Point(6, 2)));
 		container.add(new Triangle(new Point(6, 2), new Point(2, 6), new Point(5, 5)));
 		
-		TriangulationUtils.divideByCentrum(t, container);
+		Point c0 = TriangleUtils.incenter(t);
+		TriangulationUtils.divideByPoint(t, c0, container);
 		
-		//Point c0 = TriangleUtils.circumcenter(t);
 	}
 	
 	@Test
@@ -252,7 +252,7 @@ public class TriangulationUtilsTest {
 		container.add(victim);
 		container.add(other);
 		
-		Point c0 = TriangleUtils.circumcenter(victim);
+		Point c0 = TriangleUtils.incenter(victim);
 		
 
 		Triangle child1 = new Triangle(
@@ -276,7 +276,7 @@ public class TriangulationUtilsTest {
 		expected.add(child2);
 		expected.add(child3);
 
-		TriangulationUtils.divideByCentrum(victim, container);
+		TriangulationUtils.divideByPoint(victim, c0, container);
 		
 		
 		assertEquals("Interior doesn't work!", expected, container);

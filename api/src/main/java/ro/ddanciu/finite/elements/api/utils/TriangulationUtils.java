@@ -110,21 +110,16 @@ public class TriangulationUtils {
 		}
 		return minimum;
 	}
-	
-	public static void divideByCentrum(Triangle which, Set<Triangle> container) {
-		Point circumcenter = TriangleUtils.circumcenter(which);
-		divideByPoint(which, circumcenter, container);
-	}
 
-	public static void divideByPoint(Triangle which,
-			Point circumcenter, Set<Triangle> container) {
+	
+	public static void divideByPoint(Triangle which, Point point, Set<Triangle> container) {
 		
 		if (! container.remove(which)) {
 			throw new IllegalArgumentException(format("%s doesn't contain %s", container, which));
 		}
 		
 		for (Segment s : which.segments()) {
-			container.add(new Triangle(s.getP1(), s.getP2(), circumcenter));
+			container.add(new Triangle(s.getP1(), s.getP2(), point));
 		}
 		
 	}

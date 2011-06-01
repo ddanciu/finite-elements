@@ -1,8 +1,6 @@
 package ro.ddanciu.test.finite.elements.api.utils;
 
 
-import static java.lang.String.format;
-
 import java.math.BigDecimal;
 
 import org.junit.Assert;
@@ -41,27 +39,42 @@ public class TriangleUtilsTests {
 	}
 
 	@Test
-	public void circumcenterRightAngleTrinagles() {
+	public void centerRightAngleTrinagles() {
 		
-		Point c0 = TriangleUtils.circumcenter(new Triangle(new Point(1, 1), new Point(-1, 1), new Point(0, 0)));
-		Assert.assertEquals("Center of 90 angle triangle failed", new Point(0, 1), c0);
+		Triangle rightAngleTriangle = new Triangle(new Point(1, 1), new Point(-1, 1), new Point(0, 0));
+		Point ic = TriangleUtils.incenter(rightAngleTriangle);
+		Assert.assertEquals("Incenter of 90 angle triangle failed", new Point(0, 0.5858), ic);
 		
 	}
-	
+
 
 	@Test
-	public void circumcenterEchilateralTrinagles() {
+	public void centerEchilateralTrinagles() {
 		
-		Point c0 = TriangleUtils.circumcenter(new Triangle(
+		Triangle echilateral = new Triangle(
 				new Point(new BigDecimal("0"),		new BigDecimal("1.73205081")), 
 				new Point(new BigDecimal("-1.5"), 	new BigDecimal("-0.86602540")),
-				new Point(new BigDecimal("1.5"), 	new BigDecimal("-0.86602540"))));
+				new Point(new BigDecimal("1.5"), 	new BigDecimal("-0.86602540")));
 		
-		System.out.println(format("c = %s", c0));
-		System.out.println(format("cx = %f", c0.getX().doubleValue()));
-		System.out.println(format("cy = %f", c0.getY().doubleValue()));
+		Point ic = TriangleUtils.incenter(echilateral);
 		
-		Assert.assertEquals("Center of 90 angle triangle failed", new Point(0, 0), c0);
+		Assert.assertEquals("Incenter of echilateral triangle failed", new Point(0, 0), ic);
+		
+	}
+
+
+	@Test
+	public void centerRandomTrinagles() {
+		
+		Triangle triangle = new Triangle(
+				new Point(new BigDecimal("1231.8750"),	new BigDecimal("1516.0000")), 
+				new Point(new BigDecimal("895.1250"), 	new BigDecimal("1233.0000")),
+				new Point(new BigDecimal("1568.5625"), 	new BigDecimal("998.4375")));
+		
+		Point ic = TriangleUtils.incenter(triangle);
+		
+		Assert.assertEquals("Incenter of echilateral triangle failed", 
+				new Point(new BigDecimal("1198.0855"), new BigDecimal("1288.7121")), ic);
 		
 	}
 	

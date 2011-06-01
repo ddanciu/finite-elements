@@ -26,7 +26,7 @@ public class Line {
 	public static Line defineByPoints(Point p1, Point p2) {
 		
 		if (p2.getX().compareTo(p1.getX()) != 0) {
-			BigDecimal a = p2.getY().subtract(p1.getY(), MY_CNTX).divide(p2.getX().subtract(p1.getX(), MY_CNTX), MathContext.DECIMAL32).round(MY_CNTX);
+			BigDecimal a = p2.getY().subtract(p1.getY(), MY_CNTX).divide(p2.getX().subtract(p1.getX(), MY_CNTX), MathContext.DECIMAL128).round(MY_CNTX);
 			BigDecimal b = p1.getY().subtract(a.multiply(p1.getX(), MY_CNTX)).round(MY_CNTX); 
 			return new Line(a, b);
 		} else {
@@ -95,7 +95,7 @@ public class Line {
 		double d2 = this.a.pow(2, MY_CNTX).add(BigDecimal.ONE, MY_CNTX).doubleValue();
 		BigDecimal d = new BigDecimal(Math.sqrt(d2));
 		
-		BigDecimal dist = n.divide(d, MathContext.DECIMAL32);
+		BigDecimal dist = n.divide(d, MathContext.DECIMAL128);
 		dist = dist.setScale(MY_SCALE, MY_RND);
 		return dist;
 	}

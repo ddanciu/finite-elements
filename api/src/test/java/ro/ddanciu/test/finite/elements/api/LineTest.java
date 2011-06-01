@@ -31,7 +31,7 @@ public class LineTest {
 		assertDistance(new Point(1, 1), new Point(3, 3), new Point(2, 2), 0);
 		assertDistance(new Point(1, 1), new Point(3, 3), new Point(2, 0), Math.sqrt(2));
 		assertDistance(new Point(0, 0), new Point(1, 2), new Point(1, 0), 
-				new BigDecimal(2).divide(new BigDecimal(Math.sqrt(5)), MathContext.DECIMAL32).round(MY_CNTX).doubleValue());
+				new BigDecimal(2).divide(new BigDecimal(Math.sqrt(5)), MathContext.DECIMAL128).round(MY_CNTX).doubleValue());
 	}
 	
 	private void assertDistance(Point d1, Point d2, Point to, double dist) {
