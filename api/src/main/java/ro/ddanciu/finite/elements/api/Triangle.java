@@ -3,6 +3,11 @@
  */
 package ro.ddanciu.finite.elements.api;
 
+import static java.math.MathContext.DECIMAL128;
+import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
+import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
+
+import java.math.BigDecimal;
 import java.util.Iterator;
 
 /**
@@ -19,18 +24,24 @@ public class Triangle extends PoliLine {
 	
 	private final Segment e3;
 	
+	/**
+	 * Computed at first request.
+	 * @see  this#incenter()
+	 */
+	private transient Point incenter = null;
+
+	/**
+	 * Computerd at first request.
+	 * @see this#perimeter()
+	 */
+	private transient BigDecimal perimeter = null;
+	
 	public Triangle(Point p1, Point p2, Point p3) {
 		super(p1, p2, p3);
 		Iterator<Segment> segments = super.segments().iterator();
 		this.e1 = segments.next();
 		this.e2 = segments.next();
 		this.e3 = segments.next();
-		
-		if (getP1().equals(getP2())
-				|| getP1().equals(getP3())
-				|| getP2().equals(getP3())) {
-			System.out.println("Victory!");
-		}
 	}
 	
 	public Triangle(Segment e1, Segment e2, Segment e3) {
@@ -38,12 +49,6 @@ public class Triangle extends PoliLine {
 		this.e1 = e1;
 		this.e2 = e2;
 		this.e3 = e3;
-		
-		if (getP1().equals(getP2())
-				|| getP1().equals(getP3())
-				|| getP2().equals(getP3())) {
-			System.out.println("Victory!");
-		}
 	}
 
 	public Segment getE1() {
@@ -89,6 +94,56 @@ public class Triangle extends PoliLine {
 			}
 		}
 		return true;
+	}
+	
+	public BigDecimal area() {
+		BigDecimal a = this.getP1().getX().subtract(this.getP3().getX(), DECIMAL128);
+		BigDecimal b = this.getP1().getY().subtract(this.getP3().getY(), DECIMAL128);
+		BigDecimal c = this.getP2().getX().subtract(this.getP3().getX(), DECIMAL128);
+		BigDecimal d = this.getP2().getY().subtract(this.getP3().getY(), DECIMAL128);
+		
+		BigDecimal area = (a.multiply(d, DECIMAL128).subtract(b.multiply(c, DECIMAL128))).abs().multiply(new BigDecimal(0.5), DECIMAL128);
+		return area.setScale(MY_SCALE, MY_RND);
+	}
+	
+	
+	public BigDecimal perimeter() {
+
+		if (perimeter == null) {
+			BigDecimal a = this.getE1().length();
+			BigDecimal b = this.getE2().length();
+			BigDecimal c = this.getE3().length();
+			perimeter = a.add(b, DECIMAL128).add(c, DECIMAL128);
+		}
+		return perimeter;
+	}
+	
+	
+	/**
+	 * http://en.wikipedia.org/wiki/Incenter#Coordinates_of_the_incenter
+	 * @param t
+	 * @return
+	 */
+	public Point incenter() {
+		
+		if (incenter == null) {
+			BigDecimal perimeter = perimeter();
+			
+			BigDecimal x1 = this.getE1().length().multiply(this.getP1().getX(), DECIMAL128);
+			BigDecimal x2 = this.getE2().length().multiply(this.getP2().getX(), DECIMAL128);
+			BigDecimal x3 = this.getE3().length().multiply(this.getP3().getX(), DECIMAL128);
+			
+			BigDecimal y1 = this.getE1().length().multiply(this.getP1().getY(), DECIMAL128);
+			BigDecimal y2 = this.getE2().length().multiply(this.getP2().getY(), DECIMAL128);
+			BigDecimal y3 = this.getE3().length().multiply(this.getP3().getY(), DECIMAL128);
+			
+			BigDecimal x = x1.add(x2, DECIMAL128).add(x3, DECIMAL128).divide(perimeter, DECIMAL128);
+			BigDecimal y = y1.add(y2, DECIMAL128).add(y3, DECIMAL128).divide(perimeter, DECIMAL128);
+			
+			incenter = new Point(x, y);
+		}
+		
+		return incenter; 
 	}
 	
 }

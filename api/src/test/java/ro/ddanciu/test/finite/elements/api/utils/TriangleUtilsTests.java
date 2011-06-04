@@ -42,7 +42,7 @@ public class TriangleUtilsTests {
 	public void centerRightAngleTrinagles() {
 		
 		Triangle rightAngleTriangle = new Triangle(new Point(1, 1), new Point(-1, 1), new Point(0, 0));
-		Point ic = TriangleUtils.incenter(rightAngleTriangle);
+		Point ic = rightAngleTriangle.incenter();
 		Assert.assertEquals("Incenter of 90 angle triangle failed", new Point(0, 0.5858), ic);
 		
 	}
@@ -56,7 +56,7 @@ public class TriangleUtilsTests {
 				new Point(new BigDecimal("-1.5"), 	new BigDecimal("-0.86602540")),
 				new Point(new BigDecimal("1.5"), 	new BigDecimal("-0.86602540")));
 		
-		Point ic = TriangleUtils.incenter(echilateral);
+		Point ic = echilateral.incenter();
 		
 		Assert.assertEquals("Incenter of echilateral triangle failed", new Point(0, 0), ic);
 		
@@ -71,7 +71,7 @@ public class TriangleUtilsTests {
 				new Point(new BigDecimal("895.1250"), 	new BigDecimal("1233.0000")),
 				new Point(new BigDecimal("1568.5625"), 	new BigDecimal("998.4375")));
 		
-		Point ic = TriangleUtils.incenter(triangle);
+		Point ic = triangle.incenter();
 		
 		Assert.assertEquals("Incenter of echilateral triangle failed", 
 				new Point(new BigDecimal("1198.0855"), new BigDecimal("1288.7121")), ic);

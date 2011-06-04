@@ -2,8 +2,6 @@ package ro.ddanciu.finite.elements.api.utils;
 
 import static java.lang.String.format;
 import static java.math.MathContext.DECIMAL128;
-import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
-import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
 import java.math.BigDecimal;
 
@@ -39,26 +37,6 @@ public class TriangleUtils {
 		return segment;
 	}
 	
-	public static BigDecimal area(Triangle t) {
-		BigDecimal a = t.getP1().getX().subtract(t.getP3().getX(), DECIMAL128);
-		BigDecimal b = t.getP1().getY().subtract(t.getP3().getY(), DECIMAL128);
-		BigDecimal c = t.getP2().getX().subtract(t.getP3().getX(), DECIMAL128);
-		BigDecimal d = t.getP2().getY().subtract(t.getP3().getY(), DECIMAL128);
-		
-		BigDecimal area = (a.multiply(d, DECIMAL128).subtract(b.multiply(c, DECIMAL128))).abs().multiply(new BigDecimal(0.5), DECIMAL128);
-		return area.setScale(MY_SCALE, MY_RND);
-	}
-	
-	public static BigDecimal perimeter(Triangle t) {
-
-		BigDecimal a = t.getE1().length();
-		BigDecimal b = t.getE2().length();
-		BigDecimal c = t.getE3().length();
-		
-		BigDecimal x = a.add(b, DECIMAL128).add(c, DECIMAL128);
-		return x;
-	}
-	
 	/**
 	 * Three points are a counter-clockwise turn if ccw > 0, clockwise if
 	 * ccw < 0, and collinear if ccw = 0 because ccw is a determinant that
@@ -72,26 +50,4 @@ public class TriangleUtils {
 	}
 
 
-	/**
-	 * http://en.wikipedia.org/wiki/Incenter#Coordinates_of_the_incenter
-	 * @param t
-	 * @return
-	 */
-	public static Point incenter(Triangle triangle) {
-		
-		BigDecimal perimeter = perimeter(triangle);
-		
-		BigDecimal x1 = triangle.getE1().length().multiply(triangle.getP1().getX(), DECIMAL128);
-		BigDecimal x2 = triangle.getE2().length().multiply(triangle.getP2().getX(), DECIMAL128);
-		BigDecimal x3 = triangle.getE3().length().multiply(triangle.getP3().getX(), DECIMAL128);
-		
-		BigDecimal y1 = triangle.getE1().length().multiply(triangle.getP1().getY(), DECIMAL128);
-		BigDecimal y2 = triangle.getE2().length().multiply(triangle.getP2().getY(), DECIMAL128);
-		BigDecimal y3 = triangle.getE3().length().multiply(triangle.getP3().getY(), DECIMAL128);
-		
-		BigDecimal x = x1.add(x2, DECIMAL128).add(x3, DECIMAL128).divide(perimeter, DECIMAL128);
-		BigDecimal y = y1.add(y2, DECIMAL128).add(y3, DECIMAL128).divide(perimeter, DECIMAL128);
-
-		return new Point(x, y); 
-	}
 }

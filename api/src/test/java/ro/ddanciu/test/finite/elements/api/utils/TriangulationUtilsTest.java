@@ -24,7 +24,6 @@ import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.Segment;
 import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.finite.elements.api.Vector;
-import ro.ddanciu.finite.elements.api.utils.TriangleUtils;
 import ro.ddanciu.finite.elements.api.utils.TriangulationUtils;
 
 public class TriangulationUtilsTest {
@@ -233,7 +232,7 @@ public class TriangulationUtilsTest {
 		container.add(new Triangle(new Point(4, 1), new Point(2, 6), new Point(6, 2)));
 		container.add(new Triangle(new Point(6, 2), new Point(2, 6), new Point(5, 5)));
 		
-		Point c0 = TriangleUtils.incenter(t);
+		Point c0 = t.incenter();
 		TriangulationUtils.divideByPoint(t, c0, container);
 		
 	}
@@ -252,7 +251,7 @@ public class TriangulationUtilsTest {
 		container.add(victim);
 		container.add(other);
 		
-		Point c0 = TriangleUtils.incenter(victim);
+		Point c0 = victim.incenter();
 		
 
 		Triangle child1 = new Triangle(
