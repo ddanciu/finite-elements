@@ -14,6 +14,8 @@ import java.math.BigDecimal;
  *
  */
 public class Segment {
+
+	private static final BigDecimal TWO = new BigDecimal("2");
 	
 	protected final Point p1;
 	
@@ -56,6 +58,12 @@ public class Segment {
 		return this.length;
 	}
 	
+	public Point getMiddlePoint() {
+		BigDecimal xm = p1.getX().add(p2.getX(), DECIMAL128).divide(TWO, DECIMAL128);
+		BigDecimal ym = p1.getY().add(p2.getY(), DECIMAL128).divide(TWO, DECIMAL128);
+		return new Point(xm, ym );
+	}
+
 	public boolean intersects(Segment other) {
 		/*
 		| Ax-Cx  Bx-Cx |    | Ax-Dx  Bx-Dx |
