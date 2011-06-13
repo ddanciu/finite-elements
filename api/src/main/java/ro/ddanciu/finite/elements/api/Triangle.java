@@ -15,6 +15,8 @@ import java.util.Iterator;
  *
  */
 public class Triangle extends PoliLine {
+
+	private static final BigDecimal TWO = new BigDecimal(2);
 	
 	private static final long serialVersionUID = 1L;
 
@@ -42,6 +44,18 @@ public class Triangle extends PoliLine {
 		this.e1 = segments.next();
 		this.e2 = segments.next();
 		this.e3 = segments.next();
+		
+		if (p1.equals(p2) || p1.equals(p3) || p2.equals(p3)) {
+			System.out.println("Problems!");
+			System.exit(1);
+		} else if (
+				new Segment(p1, p2).getLine().distance(p3).doubleValue() == 0 ||
+				new Segment(p2, p3).getLine().distance(p1).doubleValue() == 0 ||
+				new Segment(p3, p1).getLine().distance(p2).doubleValue() == 0 
+		) {
+			System.out.println("Problems!");
+			System.exit(1);
+		}
 	}
 	
 	public Triangle(Segment e1, Segment e2, Segment e3) {
@@ -145,5 +159,27 @@ public class Triangle extends PoliLine {
 		
 		return incenter; 
 	}
-	
+
+	public BigDecimal perfectness() {
+
+		try {
+			BigDecimal a = this.getE1().length();
+			BigDecimal b = this.getE2().length();
+			BigDecimal c = this.getE3().length();
+			
+			BigDecimal x = TWO.multiply(a, DECIMAL128).multiply(b, DECIMAL128).multiply(c, DECIMAL128);
+			
+			BigDecimal t1 = b.add(c, DECIMAL128).subtract(a, DECIMAL128);
+			BigDecimal t2 = c.add(a, DECIMAL128).subtract(b, DECIMAL128);
+			BigDecimal t3 = a.add(b, DECIMAL128).subtract(c, DECIMAL128);
+			BigDecimal y = t1.multiply(t2, DECIMAL128).multiply(t3, DECIMAL128);
+			
+			BigDecimal rez = x.divide(y, DECIMAL128);
+			rez = rez.setScale(MY_SCALE, MY_RND);
+			return rez;
+		} catch (ArithmeticException e) {
+			System.out.println("AritmeticProblems for " + this.toString());
+			throw e;
+		}
+	}
 }

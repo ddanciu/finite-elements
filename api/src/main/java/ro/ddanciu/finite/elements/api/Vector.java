@@ -64,7 +64,7 @@ public class Vector {
 		}
 		
 		Vector other = (Vector) obj;
-		if (p1ToP2) {
+		if (p1ToP2 == other.p1ToP2) {
 			return (magnitude.getP1().equals(other.magnitude.getP1()) 
 					&& magnitude.getP2().equals(other.magnitude.getP2()));
 		} else {

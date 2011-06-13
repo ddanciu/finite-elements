@@ -139,7 +139,7 @@ public class Line {
 
 		@Override
 		public BigDecimal distance(Point p) {
-			return p.getX().abs(DECIMAL128).setScale(MY_SCALE, MY_RND);
+			return a.subtract(p.getX(), DECIMAL128).abs(DECIMAL128).setScale(MY_SCALE, MY_RND);
 		}
 		
 		

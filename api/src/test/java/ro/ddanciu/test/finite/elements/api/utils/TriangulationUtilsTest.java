@@ -1,5 +1,6 @@
 package ro.ddanciu.test.finite.elements.api.utils;
 
+import static java.lang.String.format;
 import static junit.framework.Assert.assertEquals;
 import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.gatherExterior;
 import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.gatherInterior;
@@ -281,5 +282,197 @@ public class TriangulationUtilsTest {
 		assertEquals("Interior doesn't work!", expected, container);
 	}
 	
+	@Test
+	public void minimumCommonPoliLine() {
+		
+		Triangle t1 = new Triangle(
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), 
+					new Point(new BigDecimal("1.0000"), new BigDecimal("5.0000"))); 
+		Triangle t2 = new Triangle(
+					new Point(new BigDecimal("2.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), 
+					new Point(new BigDecimal("1.7208"), new BigDecimal("1.7208"))); 
+		Triangle t3 = new Triangle(
+					new Point(new BigDecimal("1.0000"), new BigDecimal("5.0000")), 
+					new Point(new BigDecimal("3.0000"), new BigDecimal("6.0000")), 
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000"))); 
+		Triangle t4 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), 
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000")), 
+					new Point(new BigDecimal("1.7208"), new BigDecimal("1.7208"))); 
+		Triangle t5 = new Triangle(
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000")), 
+					new Point(new BigDecimal("2.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("1.7208"), new BigDecimal("1.7208"))); 
+		
+		
+		Triangle t6 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), 
+					new Point(new BigDecimal("1.0000"), new BigDecimal("5.0000")), 
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000"))); 
+		Triangle t7 = new Triangle(
+					new Point(new BigDecimal("1.0000"), new BigDecimal("5.0000")), 
+					new Point(new BigDecimal("3.0000"), new BigDecimal("6.0000")), 
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000"))); 
+		Triangle t8 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), 
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000")), 
+					new Point(new BigDecimal("2.0000"), new BigDecimal("0.0000"))); 
+
+		Set<Triangle> mom = new HashSet<Triangle>(Arrays.asList(t1, t2, t3, t4, t5));
+		Set<Triangle> dad = new HashSet<Triangle>(Arrays.asList(t6, t7, t8));
+		
+		Map<Vector, List<Vector>> momsMapping = TriangulationUtils.mapping(mom);
+		Map<Vector, List<Vector>> dadsMapping = TriangulationUtils.mapping(dad);
+		
+		Vector startup = new Vector(
+					new Point(new BigDecimal("1.7208"), new BigDecimal("1.7208")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")));
+		
+		Set<Vector> actual = TriangulationUtils.minimumCommonPoliLine(momsMapping, dadsMapping, startup);
+		Set<Vector> expected = new HashSet<Vector>(
+				Arrays.asList(
+						new Vector(new Point(new BigDecimal("2.0000"), new BigDecimal("0.0000")), new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000"))), 
+						new Vector(new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000"))), 
+						new Vector(new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000")), new Point(new BigDecimal("2.0000"), new BigDecimal("0.0000"))) 
+				));
+		
+		Assert.assertEquals("minimumCommonPoliLine failed", expected, actual);
+		
+	}
 	
+	
+
+	@Test
+	public void interiorAllHart() {
+		
+		Triangle t1 = new Triangle(
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), 
+					new Point(new BigDecimal("1.0000"), new BigDecimal("5.0000"))); 
+		Triangle t2 = new Triangle(
+					new Point(new BigDecimal("2.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), 
+					new Point(new BigDecimal("1.7208"), new BigDecimal("1.7208"))); 
+		Triangle t3 = new Triangle(
+					new Point(new BigDecimal("1.0000"), new BigDecimal("5.0000")), 
+					new Point(new BigDecimal("3.0000"), new BigDecimal("6.0000")), 
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000"))); 
+		Triangle t4 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), 
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000")), 
+					new Point(new BigDecimal("1.7208"), new BigDecimal("1.7208"))); 
+		Triangle t5 = new Triangle(
+					new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000")), 
+					new Point(new BigDecimal("2.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("1.7208"), new BigDecimal("1.7208"))); 
+		
+		Set<Triangle> mom = new HashSet<Triangle>(Arrays.asList(t1, t2, t3, t4, t5));
+		Map<Vector, List<Vector>> momsMapping = TriangulationUtils.mapping(mom);
+		
+		Set<Vector> minimum = new HashSet<Vector>(
+				Arrays.asList(
+						new Vector(new Point(new BigDecimal("2.0000"), new BigDecimal("0.0000")), new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000"))), 
+						new Vector(new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")), new Point(new BigDecimal("1.0000"), new BigDecimal("5.0000"))), 
+						new Vector(new Point(new BigDecimal("1.0000"), new BigDecimal("5.0000")), new Point(new BigDecimal("3.0000"), new BigDecimal("6.0000"))), 
+						new Vector(new Point(new BigDecimal("3.0000"), new BigDecimal("6.0000")), new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000"))), 
+						new Vector(new Point(new BigDecimal("4.0000"), new BigDecimal("4.0000")), new Point(new BigDecimal("2.0000"), new BigDecimal("0.0000"))) 
+				));
+		
+		Collection<Triangle> interior = TriangulationUtils.gatherInterior(momsMapping, minimum);
+		
+		Assert.assertEquals("gatherInterior failed", mom, new HashSet<Triangle>(interior));
+	}
+	
+	@Test
+	public void testVectorEquals() {
+		Vector v1 = new Vector(
+				new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")),
+				new Point(new BigDecimal("1.7208"), new BigDecimal("1.7208")));
+		Vector v2 = new Vector(
+				new Point(new BigDecimal("0.0000"), new BigDecimal("2.0000")),
+				new Point(new BigDecimal("1.7208"), new BigDecimal("1.7208")));
+
+		Assert.assertEquals("Vector equals failed", v1, v2);
+		Assert.assertEquals("Vector equals failed", v1.invert(), v2.invert());
+		
+		Assert.assertFalse("Vector equals failed", v1.equals(v2.invert()));
+		Assert.assertFalse("Vector equals failed", v1.invert().equals(v2));
+		
+		
+	}
+	
+	@Test
+	public void testDivideByMedians() {
+		Triangle t1 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("1.0000")), 
+					new Point(new BigDecimal("1.0000"), new BigDecimal("0.0000"))); 
+		Triangle t2 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("1.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("-1.0000"))); 
+		Triangle t3 = new Triangle(
+				new Point(new BigDecimal("0.0000"), new BigDecimal("0.0000")), 
+				new Point(new BigDecimal("0.0000"), new BigDecimal("1.0000")), 
+				new Point(new BigDecimal("-1.0000"), new BigDecimal("0.0000"))); 		
+		
+		Triangle t4 = new Triangle(
+						new Point(new BigDecimal("0.0000"), new BigDecimal("0.0000")), 
+						new Point(new BigDecimal("-1.0000"), new BigDecimal("0.0000")), 
+						new Point(new BigDecimal("-1.0000"), new BigDecimal("-1.0000"))); 
+		
+		Set<Triangle> container = new HashSet<Triangle>(Arrays.asList(t1, t2, t3, t4));
+		
+		TriangulationUtils.divideByMedians(t1, container);
+		
+		Triangle te1 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.5000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.5000"))); 
+		Triangle te2 = new Triangle(
+					new Point(new BigDecimal("0.5000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("1.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.5000"), new BigDecimal("0.5000"))); 
+		Triangle te3 = new Triangle(
+					new Point(new BigDecimal("0.5000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.5000"), new BigDecimal("0.5000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.5000"))); 
+		Triangle te4 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.5000")), 
+					new Point(new BigDecimal("0.5000"), new BigDecimal("0.5000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("1.0000"))); 
+		
+		Triangle te5 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.5000")), 
+					new Point(new BigDecimal("-1.0000"), new BigDecimal("0.0000"))); 
+		Triangle te6 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.5000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("1.0000")), 
+					new Point(new BigDecimal("-1.0000"), new BigDecimal("0.0000"))); 
+		Triangle te7 = new Triangle(
+					new Point(new BigDecimal("0.0000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("-1.0000")), 
+					new Point(new BigDecimal("0.5000"), new BigDecimal("0.0000"))); 
+		Triangle te8 = new Triangle(
+					new Point(new BigDecimal("0.5000"), new BigDecimal("0.0000")), 
+					new Point(new BigDecimal("0.0000"), new BigDecimal("-1.0000")), 
+					new Point(new BigDecimal("1.0000"), new BigDecimal("0.0000"))); 
+
+
+		Assert.assertTrue(format("division by medians fails! %s", te1), container.remove(te1));
+		Assert.assertTrue(format("division by medians fails! %s", te2), container.remove(te2));
+		Assert.assertTrue(format("division by medians fails! %s", te3), container.remove(te3));
+		Assert.assertTrue(format("division by medians fails! %s", te4), container.remove(te4));
+		Assert.assertTrue(format("division by medians fails! %s", te5), container.remove(te5));
+		Assert.assertTrue(format("division by medians fails! %s", te6), container.remove(te6));
+		Assert.assertTrue(format("division by medians fails! %s", te7), container.remove(te7));
+		Assert.assertTrue(format("division by medians fails! %s", te8), container.remove(te8));
+		Assert.assertTrue(format("division by medians fails! %s", t4), container.remove(t4));
+
+		Assert.assertTrue("division by medians fails!", container.isEmpty());
+		
+	}
 }
