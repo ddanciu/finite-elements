@@ -13,6 +13,7 @@
 	<modules>
 		<module>api</module>
 		<module>algorithms</module>
+		<module>analysis</module>
 	</modules>
 	
 	  <properties>
@@ -30,6 +31,13 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>1.8.5</version>
+        </dependency>
+        <dependency>
+        	<groupId>ro.ddanciu</groupId>
+        	<artifactId>finite-elements-api</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
         </dependency>
     </dependencies>
 

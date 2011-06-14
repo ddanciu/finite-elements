@@ -100,6 +100,18 @@ public class Line {
 		dist = dist.setScale(MY_SCALE, MY_RND);
 		return dist;
 	}
+	
+	public double angle(Line other) {
+		if (other instanceof OyLine) {
+			return other.angle(this);
+		}
+		
+		BigDecimal m1_m2abs = this.a.subtract(other.a, DECIMAL128).abs();
+		BigDecimal m1m2plus1 = BigDecimal.ONE.add(this.a.multiply(other.a, DECIMAL128), DECIMAL128);
+		BigDecimal m = m1_m2abs.divide(m1m2plus1, DECIMAL128);
+		m.setScale(MY_SCALE, MY_RND);
+		return Math.atan(m.doubleValue());
+	}
 
 	private static final class OyLine extends Line {
 
@@ -141,6 +153,12 @@ public class Line {
 		public BigDecimal distance(Point p) {
 			return a.subtract(p.getX(), DECIMAL128).abs(DECIMAL128).setScale(MY_SCALE, MY_RND);
 		}
+
+		@Override
+		public double angle(Line other) {
+			return Math.PI/2 - new Line(BigDecimal.ZERO, BigDecimal.ZERO).angle(other);
+		}
+		
 		
 		
 		

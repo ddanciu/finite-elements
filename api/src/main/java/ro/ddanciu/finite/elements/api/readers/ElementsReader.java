@@ -5,6 +5,7 @@ package ro.ddanciu.finite.elements.api.readers;
 
 import static java.lang.String.format;
 
+import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,14 +45,29 @@ import ro.ddanciu.finite.elements.api.PoliLine;
 public class ElementsReader implements Closeable {
 	
 	private Scanner scanner;
-	
+
 	public ElementsReader(InputStream stream) {
-		scanner = new Scanner(stream).useDelimiter("\\s+|\\,\\s*|^\\s*$");
+		scanner = new Scanner(stream).useDelimiter("(?m)(^\\#.*|\\s+|\\,\\s*|^\\s*$|^$)+");
 	}
-	
+
 	public PoliLine readPoliLine() {
 		List<Point> points = readPoints();
 		return new PoliLine(points.toArray(new Point[points.size()]));
+	}
+
+	public List<PoliLine> readPoliLines() {
+		
+		List<PoliLine> pls = new ArrayList<PoliLine>();
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			if (line.startsWith("#")) {
+				continue;
+			}
+			PoliLine pl = new ElementsReader(new ByteArrayInputStream(line.getBytes())).readPoliLine();
+			pls.add(pl);
+		}
+		return pls;
+		
 	}
 
 	public List<Point> readPoints() {
